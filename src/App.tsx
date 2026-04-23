@@ -160,27 +160,30 @@ export default function App() {
         </div>
 
         {/* Right Column: Action Area */}
-        <div className="flex-1 flex flex-col gap-6">
+        <div className="flex-1 flex flex-col gap-6 relative z-10">
           
           {/* Entry Fee Card - Stark Contrast */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white text-black p-8 md:p-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6"
+            className="bg-white text-black p-8 md:p-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 relative overflow-hidden"
           >
+            {/* Subtle hacking accent on white section */}
+            <div className="absolute top-0 right-0 w-16 h-16 bg-emerald-500/10 rotate-45 translate-x-8 -translate-y-8"></div>
+            
             <div>
-              <h2 className="text-[10px] uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Access Voucher Fee</h2>
+              <h2 className="text-[10px] uppercase font-bold tracking-[0.3em] mb-2 opacity-60">Registration Access Fee</h2>
               <p className="text-4xl md:text-5xl font-serif italic mb-1">One Hundred Twenty Dollars</p>
-              <p className="text-[10px] uppercase tracking-widest opacity-40">equivalent to {(costUsd * takaPerDollar).toLocaleString()} BDT</p>
+              <p className="text-[10px] uppercase tracking-widest opacity-40">Total conversion: {(costUsd * takaPerDollar).toLocaleString()} BDT</p>
             </div>
-            <div className="text-left sm:text-right w-full sm:w-auto mt-2 sm:mt-0">
+            <div className="text-left sm:text-right w-full sm:w-auto mt-2 sm:mt-0 relative z-10">
               <p className="text-4xl md:text-5xl font-mono tracking-tighter font-bold">${costUsd}.00</p>
-              <p className="text-[10px] opacity-60 uppercase tracking-widest font-bold mt-1">Payable in XMR / BTC</p>
+              <p className="text-[10px] opacity-60 uppercase tracking-widest font-bold mt-1">Accepting XMR / BTC / ETH</p>
             </div>
           </motion.div>
 
-          {/* Form Area / Terminal */}
+          {/* Registration Form Area */}
           <div className="flex-1 border border-emerald-900/20 p-6 md:p-10 flex flex-col bg-[#080808] relative group">
             {/* Corner Accents */}
             <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-emerald-500/50"></div>
@@ -188,11 +191,16 @@ export default function App() {
             <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-emerald-500/50"></div>
             <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-emerald-500/50"></div>
 
-            <div className="mb-10">
-              <label className="text-[10px] uppercase tracking-[0.3em] text-emerald-500/40 block mb-6 font-bold">Assigned User Identifier</label>
+            <div className="mb-8">
+              <div className="flex justify-between items-center mb-6">
+                 <h3 className="text-[11px] uppercase tracking-[0.4em] text-emerald-500 font-bold">Dark Web ID Registration</h3>
+                 <span className="text-[9px] text-white/20 font-mono">STEP_01_IDENTITY</span>
+              </div>
+              
+              <label className="text-[10px] uppercase tracking-[0.3em] text-emerald-500/40 block mb-4 font-bold italic">Generated User Identifier</label>
               
               <div className="relative">
-                <div className="min-h-[80px] text-2xl md:text-3xl font-mono text-emerald-400 tracking-[0.2em] p-6 border border-emerald-900/30 bg-black flex justify-between items-center group shadow-[inset_0_0_20px_rgba(16,185,129,0.05)]">
+                <div className="min-h-[100px] text-2xl md:text-3xl font-mono text-emerald-400 tracking-[0.2em] p-8 border border-emerald-900/30 bg-black flex justify-between items-center group shadow-[inset_0_0_30px_rgba(16,185,129,0.05)]">
                   <AnimatePresence mode="wait">
                     {userId ? (
                       <motion.span 
@@ -208,59 +216,68 @@ export default function App() {
                         key="status"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="text-emerald-500/20 text-sm uppercase tracking-widest italic"
+                        className="text-emerald-500/10 text-sm uppercase tracking-widest italic"
                       >
-                        {isGenerating ? "Encrypting Node..." : "Awaiting Handshake"}
+                        {isGenerating ? "Encrypting Node..." : "Handshake Required"}
                       </motion.span>
                     )}
                   </AnimatePresence>
-                  <span className="text-[9px] text-emerald-500/20 tracking-normal hidden sm:block">SYSCALL_ID</span>
+                  <div className="flex flex-col items-end gap-1 shrink-0 ml-4">
+                    <span className="text-[9px] text-emerald-500/20 tracking-normal hidden sm:block">CID: {Math.floor(Math.random() * 9000) + 1000}</span>
+                    <div className={`w-1.5 h-1.5 rounded-full ${userId ? 'bg-emerald-500 shadow-[0_0_5px_emerald]' : 'bg-red-900'} transition-colors animate-pulse`}></div>
+                  </div>
                 </div>
                 
                 {/* Secondary verification labels */}
                 {userId && (
                   <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="mt-3 flex gap-4 text-[9px] uppercase tracking-widest text-emerald-500/30 italic"
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-[9px] uppercase tracking-widest text-emerald-500/30 italic font-bold"
                   >
-                    <span className="flex items-center gap-1.5"><Fingerprint className="w-3 h-3" /> Biometric: Authenticated</span>
-                    <span className="flex items-center gap-1.5"><Lock className="w-3 h-3" /> State: PGP_SECURE</span>
+                    <span className="flex items-center gap-1.5 border-r border-emerald-900/30 pr-6"><Fingerprint className="w-3 h-3" /> Biometric: Registered</span>
+                    <span className="flex items-center gap-1.5 border-r border-emerald-900/30 pr-6"><Lock className="w-3 h-3" /> Proxy: TOR_TUNNEL</span>
+                    <span className="flex items-center gap-1.5"><Globe className="w-3 h-3" /> Node: v3-on6</span>
                   </motion.div>
                 )}
               </div>
             </div>
 
-            {/* Terminal Lines - Integrated subtly below ID */}
-            <div className="flex-1 flex flex-col gap-2 font-mono text-[10px] text-emerald-500/30 mb-10 overflow-hidden">
+            {/* Terminal Lines - System Logs */}
+            <div className="flex-1 flex flex-col gap-2 font-mono text-[9px] text-emerald-500/20 mb-10 overflow-hidden bg-black/20 p-4 border-l border-emerald-900/10">
+              <div className="text-[10px] text-emerald-500/40 font-bold mb-2 uppercase tracking-widest border-b border-emerald-900/5 pb-1 flex justify-between">
+                <span>Registration_Log</span>
+                <span className="animate-pulse">_</span>
+              </div>
               {terminalLines.map((line, i) => (
                 <div key={i} className="flex gap-2">
-                  <span className="text-emerald-500/10 shrink-0">[{new Date().toLocaleTimeString([], { hour12: false })}]</span>
-                  <span className="truncate">{line}</span>
+                  <span className="text-emerald-500/10 shrink-0 select-none">[{new Date().toLocaleTimeString([], { hour12: false })}]</span>
+                  <span className="truncate whitespace-pre-wrap">{line}</span>
                 </div>
               ))}
+              {terminalLines.length === 0 && <div className="italic opacity-30">Awaiting system initialization...</div>}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-auto relative z-20">
               <button 
                 onClick={generateUserId}
                 disabled={isGenerating}
-                className="border border-emerald-900/30 py-5 text-[10px] uppercase tracking-[0.3em] font-bold text-emerald-500/80 hover:bg-emerald-500/10 hover:border-emerald-500/50 transition-all active:scale-[0.98] disabled:opacity-20"
+                className="border border-emerald-900/30 py-5 text-[10px] uppercase font-black tracking-[0.4em] text-emerald-500/80 hover:bg-emerald-500/10 hover:border-emerald-500/50 transition-all active:scale-[0.98] disabled:opacity-20 cursor-crosshair"
                 id="btn-refresh"
               >
-                {userId ? "Recalculate Hash" : "Begin Handshake"}
+                {userId ? "Recalculate Node" : "Initialize ID"}
               </button>
               <button 
                  onClick={handleLoginAttempt}
-                className="bg-emerald-500 text-black py-5 text-[10px] uppercase font-bold tracking-[0.3em] hover:bg-emerald-400 transition-all active:scale-[0.98] shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                className="bg-emerald-500 text-black py-5 text-[10px] uppercase font-black tracking-[0.4em] hover:bg-emerald-400 transition-all active:scale-[0.98] shadow-[0_0_25px_rgba(16,185,129,0.2)]"
                 id="btn-confirm"
               >
-                Authorize Link
+                Submit Form
               </button>
             </div>
           </div>
-
         </div>
+
       </main>
 
       {/* Status Footer */}
