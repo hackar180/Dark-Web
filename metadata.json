@@ -1,0 +1,6 @@
+{
+  "name": "Onion Node Portal",
+  "description": "Secure access portal for dark web mode node initialization. Requires Tor browser for full authentication.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
